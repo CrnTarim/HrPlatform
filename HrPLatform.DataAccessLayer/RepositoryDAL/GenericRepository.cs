@@ -19,6 +19,11 @@ namespace HrPLatform.DataAccessLayer.RepositoryDAL
             _dbSet = _context.Set<T>();
         }
 
+        public async Task<T> GetbyIdAsync(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
         public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -26,6 +31,21 @@ namespace HrPLatform.DataAccessLayer.RepositoryDAL
         public IQueryable<T> GetAll()
         {
             return _dbSet.AsNoTracking().AsQueryable();
+        }
+      
+        public IQueryable<T> Where(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
+        }
+
+        public void Update(T entity)
+        {
+            _dbSet.Update(entity);
+        }
+
+        public void Remove(T entity)
+        {
+            _dbSet.Remove(entity);
         }
     }
 }

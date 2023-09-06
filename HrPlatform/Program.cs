@@ -17,9 +17,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options => options.AddPolicy(name: "HrPlatformOrigins",
+    policy => { policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();}));
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Services<>));
+builder.Services.AddScoped(typeof(ICompanyInformationService), typeof(CompanyInformationService));
+builder.Services.AddScoped(typeof(ICompanyInformationRepository), typeof(CompanyInformationRepository));
+builder.Services.AddScoped(typeof(ITitleInformationService), typeof(TitleInformationService));
+builder.Services.AddScoped(typeof(ITitleInformationRepository), typeof(TitleInformationRepository));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 builder.Services.AddDbContext<HrDBConnection>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
@@ -35,6 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("HrPlatformOrigins");
 
 app.UseHttpsRedirection();
 

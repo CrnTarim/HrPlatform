@@ -21,9 +21,10 @@ namespace HrPLatform.DataAccessLayer.Configurations
             builder.Property(e => e.Address).IsRequired();
             builder.Property(e => e.Phone).IsRequired();
             builder.Property(e => e.Email).IsRequired();
-            builder.Property(e => e.Gender).IsRequired();
-            builder.Property(e => e.BankNo).IsRequired();
 
+
+
+            
             
         }
     }

@@ -21,19 +21,44 @@ namespace HrPlatform.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PersonelDto>> All()
+        public async Task<List<PersonelDtoGet>> All()
         {
             var personInf = await _service.GetAllAsync();
-            var personInfDto = _mapper.Map<List<PersonelDto>>(personInf.ToList());
+            var personInfDto = _mapper.Map<List<PersonelDtoGet>>(personInf.ToList());
             return personInfDto;
         }
 
-        [HttpPost]
-        public async Task Save(PersonelDto personInformationDto)
+        [HttpGet("getbyId")]
+        public async Task<PersonelDto> GetById(Guid id) //returns only 1 company information
         {
-            
-            await _service.AddAsync(_mapper.Map<PersonalInformation>(personInformationDto));
+            var person = await _service.GetbyIdAsync(id);
+            var personelDto = _mapper.Map<PersonelDto>(person);
+            return personelDto;
 
+        }
+
+        [HttpPost]
+        public async Task Save(PersonelDto persondto)
+        {          
+            await _service.AddAsync(_mapper.Map<PersonalInformation>(persondto));
+        }
+
+        [HttpPut("updatebyId")]
+        public async Task Update(Guid id, PersonelDtoGet personelDto)
+        {
+            var entity = await _service.GetbyIdAsync(id);
+            if (entity != null)
+            {
+                _mapper.Map(personelDto, entity);
+                await _service.UpdateAsync(entity);
+            }
+        }
+
+        [HttpDelete]
+        public async Task Remove(Guid id)
+        {
+            var personel = await _service.GetbyIdAsync(id);
+            await _service.RemoveAsync(personel);
         }
     }
 }

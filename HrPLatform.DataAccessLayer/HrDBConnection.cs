@@ -1,4 +1,5 @@
-﻿using HrPlatform.Entities.Company;
+﻿using HrPlatform.Entities;
+using HrPlatform.Entities.Company;
 using HrPlatform.Entities.Employees;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,9 +17,11 @@ namespace HrPLatform.DataAccessLayer
         {
 
         }
-
         public DbSet<PersonalInformation> PersonalInformations { get; set; }
         public DbSet<CompanyInformation> CompanyInformations { get; set; }
+        public DbSet<HrAutho> HrAuthos { get; set; }
+        public DbSet<TitleInformation> TitleInformations { get; set; }  
+        public DbSet<PersonalCompany> PersonalCompanies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

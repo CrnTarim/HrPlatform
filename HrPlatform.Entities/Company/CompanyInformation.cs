@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HrPlatform.Entities.Employees;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,12 @@ namespace HrPlatform.Entities.Company
 
         public string CardHoldersName { get; set; }
         public string CardNumber { get; set; }
-        public DateTime ExpDate { get; set; }
         public string SecurityCode { get; set; }
-        public string BillingAddress { get; set; }
+
+        public ICollection<TitleInformation> TitleInformations { get; set; }
+        public ICollection<HrAutho> HrAuthos { get; set; }
+        public ICollection<PersonalCompany> PersonalInformations { get; set; }
+
+
     }
 }
