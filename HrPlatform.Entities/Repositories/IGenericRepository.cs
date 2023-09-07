@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 namespace HrPlatform.Entities.Repositories
 {
     public interface IGenericRepository<T> where T : class
-    {          
-        IQueryable<T> GetAll();    
-        Task AddAsync(T entity);        
+    {       
+        Task<T> GetbyIdAsync(Guid id);
+        Task AddAsync(T entity); 
+        IQueryable<T> GetAll();
+        IQueryable<T> Where(Expression<Func<T, bool>> expression);
+        void Update(T entity);
+        void Remove(T entity);
     }
 }

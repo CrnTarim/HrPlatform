@@ -28,10 +28,6 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("BillingAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CardHoldersName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -64,9 +60,6 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -86,19 +79,11 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BankNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -121,6 +106,9 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Department")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -130,10 +118,6 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -148,35 +132,130 @@ namespace HrPLatform.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Team")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TitleId");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("SsnPersonal")
                         .IsUnique();
 
-                    b.ToTable("TitleInformation");
+                    b.ToTable("TitleInformations");
+                });
+
+            modelBuilder.Entity("HrPlatform.Entities.HrAutho", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("PassWordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PassWordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("HrAutho", (string)null);
+                });
+
+            modelBuilder.Entity("HrPlatform.Entities.PersonalCompany", b =>
+                {
+                    b.Property<Guid>("SSN")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SSN", "CompanyId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("PersonalCompany", (string)null);
                 });
 
             modelBuilder.Entity("HrPlatform.Entities.Employees.TitleInformation", b =>
                 {
+                    b.HasOne("HrPlatform.Entities.Company.CompanyInformation", "CompanyInformation")
+                        .WithMany("TitleInformations")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HrPlatform.Entities.Employees.PersonalInformation", "PersonalInformation")
                         .WithOne("TitleInformation")
                         .HasForeignKey("HrPlatform.Entities.Employees.TitleInformation", "SsnPersonal")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("CompanyInformation");
+
                     b.Navigation("PersonalInformation");
+                });
+
+            modelBuilder.Entity("HrPlatform.Entities.HrAutho", b =>
+                {
+                    b.HasOne("HrPlatform.Entities.Company.CompanyInformation", "CompanyInformation")
+                        .WithMany("HrAuthos")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyInformation");
+                });
+
+            modelBuilder.Entity("HrPlatform.Entities.PersonalCompany", b =>
+                {
+                    b.HasOne("HrPlatform.Entities.Company.CompanyInformation", "CompanyInformation")
+                        .WithMany("PersonalInformations")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HrPlatform.Entities.Employees.PersonalInformation", "PersonalInformation")
+                        .WithMany("CompanyInformations")
+                        .HasForeignKey("SSN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyInformation");
+
+                    b.Navigation("PersonalInformation");
+                });
+
+            modelBuilder.Entity("HrPlatform.Entities.Company.CompanyInformation", b =>
+                {
+                    b.Navigation("HrAuthos");
+
+                    b.Navigation("PersonalInformations");
+
+                    b.Navigation("TitleInformations");
                 });
 
             modelBuilder.Entity("HrPlatform.Entities.Employees.PersonalInformation", b =>
                 {
+                    b.Navigation("CompanyInformations");
+
                     b.Navigation("TitleInformation")
                         .IsRequired();
                 });

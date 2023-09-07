@@ -24,10 +24,9 @@ namespace HrPLatform.DataAccessLayer.Configurations
             builder.Property(e => e.CompanyAddress).IsRequired();
 
             builder.Property(e => e.CardHoldersName).IsRequired();
-            builder.Property(e => e.CardNumber).IsRequired();
-            builder.Property(e => e.ExpDate).IsRequired();
+            builder.Property(e => e.CardNumber).IsRequired();          
             builder.Property(e => e.SecurityCode).IsRequired();
-            builder.Property(e => e.BillingAddress).IsRequired();
+            
         }
     }
 }

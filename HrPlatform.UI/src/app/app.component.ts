@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Company } from './models/company';
+import { CompanyService } from './services/company.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'HrPlatform.UI';
+ 
+  constructor(private route:Router){}
+
+  ngOnInit():void {
+
+  }
+
+  gotoCompany()
+  {
+    this.route.navigate(["/company"]);
+  }
+   
 }

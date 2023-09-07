@@ -10,7 +10,12 @@ namespace HrPlatform.Entities.Service
     public interface IService<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T> AddAsync(T entity);      
-    
+        Task<T> GetbyIdAsync(Guid id);
+        Task<T> AddAsync(T entity);
+        IQueryable<T> Where(Expression<Func<T, bool>> expression);
+
+        Task UpdateAsync(T entity);
+        Task RemoveAsync(T entity);
+
     }
 }
