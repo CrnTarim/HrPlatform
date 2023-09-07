@@ -19,6 +19,7 @@ namespace HrPlatform.Entities.Employees
 
         // Navigation property for the 1-1 relationship
         public TitleInformation TitleInformation { get; set; }
+
         public ICollection<PersonalCompany> CompanyInformations { get; set; }
 
     }
